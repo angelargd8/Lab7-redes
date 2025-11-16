@@ -14,6 +14,7 @@ import random
 import json
 import time
 import numpy as np
+from kafka import KafkaProducer
 
 # temperatura
 TEMP_MEAN = 55  # media a la mitad del rango
@@ -49,8 +50,36 @@ def generar_data():
     }
     return data
 
-if __name__ == "__main__":
+def main(): 
+
+    # server
+    bootstrap_server = "147.182.219.133:9092"
+    topic = "22243"
+
+    #kafka producer
+    producer = KafkaProducer(
+        bootstrap_servers=bootstrap_server,
+        value_serializer=lambda v: json.dumps(v).encode('utf-8'),  # JSON -> bytes
+        key_serializer=lambda k: k.encode('utf-8')
+    )
+
+    print("Enviando datos al servidor Kafka...\n")
+
     while True:
-        lectura = generar_data()
-        print(json.dumps(lectura, ensure_ascii=False))
-        time.sleep(20)  # espera 20 segundos antes de la siguiente lectura
+        data = generar_data()
+        print("Enviando:", data)
+
+        producer.send(
+            topic=topic,
+            key="sensor1",
+            value=data
+        )
+
+        # Forzar envío inmediato
+        producer.flush()
+
+        # Espera entre 15 y 30 segundos
+        time.sleep(random.randint(15, 30))
+
+if __name__ == "__main__":
+    main()
