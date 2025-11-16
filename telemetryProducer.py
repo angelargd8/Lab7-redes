@@ -15,11 +15,11 @@ import json
 import time
 import numpy as np
 
-# configuracion de la distribucion normal para temperatura
-
+# temperatura
 TEMP_MEAN = 55  # media a la mitad del rango
 TEMP_STD  = 15  # varianza moderada
 
+# humedad
 HUM_MEAN = 50
 HUM_STD  = 20
 
@@ -53,4 +53,4 @@ if __name__ == "__main__":
     while True:
         lectura = generar_data()
         print(json.dumps(lectura, ensure_ascii=False))
-        time.sleep(2)  # espera 2 segundos antes de la siguiente lectura
+        time.sleep(20)  # espera 20 segundos antes de la siguiente lectura
