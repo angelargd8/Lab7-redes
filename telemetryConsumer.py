@@ -66,7 +66,7 @@ def actualizar(frame):
         pass
 
 
-# graficas en vivo 
+# graficar 
 fig = plt.figure()
 ani = FuncAnimation(fig, actualizar, interval=2000)  # 2 segundos entre actualizaciones
 
